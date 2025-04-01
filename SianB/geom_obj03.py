@@ -6,11 +6,11 @@ da_population_field = None
 
 def get_stop_id_to_da_data():
     import arcpy
+    from arcpy import env
+    env.workspace = stops_workspace
     stop_id_to_buffer = {}
-    stop_id_field = arcpy.AddFieldDelimiters(stops_workspace, 'stop_id')
     stop_name_field = arcpy.AddFieldDelimiters(stops_workspace, 'stop_name')
-    where_clause = f"{stop_id_field}='CI380'"
-    where_clause = f"{stop_name_field} LIKE '%{stop_name}%'"
+    where_clause = f"{stop_name_field} LIKE '%GLADSTONE%'"
 
     with arcpy.da.SearchCursor(stop_id_fc, 
                            ['stop_id','SHAPE@', 'stop_name'], 
@@ -44,4 +44,4 @@ def get_stop_id_to_da_data():
         for data in stop_id_to_DA_data[stop_id]:
             print(stop_id, data)
 
-get_stop_id_to_da_data()
+get_stop_id_to_da_data(stops_workspace, stop_name, stop_id_fc, dissemination_area_fc)
